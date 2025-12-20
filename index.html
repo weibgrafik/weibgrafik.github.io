@@ -12,21 +12,48 @@
 
     body {
       display: flex;
-      justify-content: center; /* 横中央 */
-      align-items: center;     /* 縦中央 */
-      background-color: #ffffff;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
     }
 
-    img {
-      max-width: 80%;   /* 画面に収まるように */
-      max-height: 80vh; /* 縦方向も制限 */
-      height: auto;
-      width: auto;
+    .image-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .image-wrapper img {
+      max-width: 80vw;
+      max-height: 80vh;
+      display: block;
+    }
+
+    /* 画像の一部にかぶせるリンクエリア */
+    .link-area {
+      position: absolute;
+      top: 50%;     /* 上からの位置 */
+      left: 40%;    /* 左からの位置 */
+      width: 10%;   /* 横幅 */
+      height: 10%;  /* 高さ */
+      cursor: pointer;
+    }
+
+    /* ホバー時に分かるように（完成時は削除OK） */
+    .link-area:hover {
+      outline: 2px dashed rgba(0,0,0,0.3);
     }
   </style>
 </head>
 
 <body>
-  <img src="wimg.jpg" alt="Weiß Grafik">
+  <div class="image-wrapper">
+    <img src="wimg.jpg" alt="Weiß Grafik">
+
+    <a
+      class="link-area"
+      href="https://example.com"
+      title="リンク先へ"
+    ></a>
+  </div>
 </body>
 </html>
