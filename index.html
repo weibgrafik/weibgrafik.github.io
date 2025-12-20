@@ -3,28 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Weiß Grafik</title>
+
   <style>
-    /* ページ全体のスタイル */
     html, body {
       height: 100%;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #ffffff; /* 背景色 */
-      display: flex;
-      justify-content: center; /* 横方向中央 */
-      align-items: center;     /* 縦方向中央 */
-      text-align: center;
     }
 
-    /* メインテキスト */
-    h1 {
-      font-size: 64px;   /* 大きさ調整 */
-      font-weight: bold;
-      color: #000000;    /* 文字色 */
+    body {
+      display: flex;
+      justify-content: center; /* 横中央 */
+      align-items: center;     /* 縦中央 */
+      background-color: #ffffff;
+    }
+
+    img {
+      max-width: 80%;   /* 画面に収まるように */
+      max-height: 80vh; /* 縦方向も制限 */
+      height: auto;
+      width: auto;
     }
   </style>
 </head>
+
 <body>
-  <h1>Weiß Grafik</h1>
+  <img src="image.jpg" alt="Weiß Grafik">
 </body>
 </html>
