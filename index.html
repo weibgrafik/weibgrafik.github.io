@@ -1,59 +1,245 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>Weiß Grafik</title>
+<meta charset="UTF-8">
+<title>Weiß Grafik</title>
 
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
+<style>
 
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #ffffff;
-    }
+html, body {
+  height:100%;
+  margin:0;
+}
 
-    .image-wrapper {
-      position: relative;
-      display: inline-block;
-    }
 
-    .image-wrapper img {
-      max-width: 80vw;
-      max-height: 80vh;
-      display: block;
-    }
+/* 背景 */
+body {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
 
-    /* 画像の一部にかぶせるリンクエリア */
-    .link-area {
-      position: absolute;
-      top: 40%;     /* 上からの位置 */
-      left: 10%;    /* 左からの位置 */
-      width: 80%;   /* 横幅 */
-      height: 50%;  /* 高さ */
-      cursor: pointer;
-    }
 
-    /* ホバー時に分かるように（完成時は削除OK） */
-    .link-area:hover {
-      outline: 2px dashed rgba(0,0,0,0.3);
-    }
-  </style>
+/* ランダム背景 */
+#random-background {
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  opacity:0;
+  transform:scale(1);
+  transition:
+    opacity 3s ease,
+    transform 45s ease;
+}
+
+
+/* ズーム */
+#random-background.zoom {
+  transform:scale(1.12);
+}
+
+
+/* 暗さ調整（必要なら数値変更） */
+#background-filter {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.15);
+  z-index:-1;
+}
+
+
+
+/* ロゴ画像 */
+.image-wrapper {
+  position:relative;
+  display:inline-block;
+}
+
+
+.image-wrapper img {
+  max-width:80vw;
+  max-height:80vh;
+  display:block;
+}
+
+
+/* リンク範囲 */
+.link-area {
+  position:absolute;
+  top:40%;
+  left:10%;
+  width:80%;
+  height:50%;
+  cursor:pointer;
+}
+
+
+/* 確認用（公開時不要なら削除）
+.link-area:hover {
+ outline:2px dashed rgba(255,255,255,0.5);
+}
+*/
+
+</style>
+
 </head>
 
-<body>
-  <div class="image-wrapper">
-    <img src="wimg.jpg" alt="Weiß Grafik">
 
-    <a
-      class="link-area"
-      href="https://www.w-grafik.org/"
-      title="Weiß Grafik"
-    ></a>
-  </div>
+<body>
+
+
+<!-- 背景 -->
+<div id="random-background"></div>
+<div id="background-filter"></div>
+
+
+
+<!-- ロゴ -->
+<div class="image-wrapper">
+
+<img src="wimg.jpg" alt="Weiß Grafik">
+
+
+<a
+class="link-area"
+href="https://www.w-grafik.org/"
+title="Weiß Grafik">
+</a>
+
+
+</div>
+
+
+
+<script>
+
+(function(){
+
+const imageFolder = "images/bg/";
+const totalImages = 48;
+
+let currentImage = 0;
+
+
+const bg = document.getElementById(
+"random-background"
+);
+
+
+
+function changeBackground(){
+
+
+let next;
+
+
+do {
+
+next =
+Math.floor(Math.random()*totalImages)+1;
+
+} while(next === currentImage);
+
+
+
+currentImage = next;
+
+
+
+const filename =
+"bg-" +
+String(next).padStart(3,"0") +
+".webp";
+
+
+
+const img = new Image();
+
+
+
+img.onload=function(){
+
+
+/* フェードアウト */
+
+bg.style.opacity="0";
+
+
+
+setTimeout(function(){
+
+
+bg.style.backgroundImage =
+"url('" +
+imageFolder +
+filename +
+"')";
+
+
+
+bg.classList.remove("zoom");
+
+
+
+setTimeout(function(){
+
+
+bg.style.opacity="1";
+
+
+
+setTimeout(function(){
+
+bg.classList.add("zoom");
+
+},200);
+
+
+
+},100);
+
+
+
+},3000);
+
+
+
+};
+
+
+
+img.src =
+imageFolder + filename;
+
+
+
+}
+
+
+
+// 初回
+
+changeBackground();
+
+
+
+// 45秒ごと
+
+setInterval(
+changeBackground,
+45000
+);
+
+
+
+})();
+
+</script>
+
+
 </body>
 </html>
