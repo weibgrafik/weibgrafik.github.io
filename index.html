@@ -12,42 +12,31 @@ html,body{
 }
 
 
-/* 初期背景 */
 body{
-
     background:#ffffff;
-
     overflow:hidden;
-
 }
 
 
-/* ランダム背景 */
+
+/* 背景 */
+
 #random-background{
 
     position:fixed;
-
     inset:0;
-
     z-index:0;
 
-
     background-size:cover;
-
     background-position:center;
-
     background-repeat:no-repeat;
-
 
     opacity:0;
 
     transform:scale(1);
 
-
     transition:
-
         opacity 2s ease,
-
         transform 10s ease;
 
 }
@@ -62,31 +51,25 @@ body{
 
 
 
-/* 右下ロゴリンク */
+/* 右下リンク */
 
 .center-link{
 
     position:fixed;
 
-
     right:32px;
 
     bottom:28px;
 
-
     z-index:2;
-
 
     color:#000;
 
-
     text-decoration:none;
-
 
     opacity:0.75;
 
-
-    text-align:right;
+    white-space:nowrap;
 
 }
 
@@ -94,11 +77,7 @@ body{
 
 .main-text{
 
-    display:block;
-
-
     font-size:18px;
-
 
     letter-spacing:0.25em;
 
@@ -108,11 +87,7 @@ body{
 
 .sub-text{
 
-    display:block;
-
-
     font-size:11px;
-
 
     letter-spacing:0.35em;
 
@@ -145,9 +120,7 @@ body{
 <a class="center-link"
 href="https://www.w-grafik.org/">
 
-<span class="main-text">Weiß</span>
-
-<span class="sub-text">Grafik</span>
+<span class="main-text">Weiß</span><span class="sub-text"> Grafik</span>
 
 </a>
 
@@ -175,31 +148,24 @@ const bg=document.getElementById(
 
 
 
-
 function changeBackground(){
-
 
 
 let next;
 
 
-
 do{
-
 
 next=Math.floor(
 Math.random()*totalImages
 )+1;
 
 
-
 }while(next===currentImage);
 
 
 
-
 currentImage=next;
-
 
 
 
@@ -213,51 +179,37 @@ String(next).padStart(3,"0")+
 
 
 
-
-
 const img=new Image();
-
 
 
 
 img.onload=function(){
 
 
-
 bg.style.opacity="0";
-
-
 
 
 setTimeout(function(){
 
 
-
 bg.style.backgroundImage=
-
 "url('"+imageFolder+filename+"')";
-
 
 
 bg.classList.remove("zoom");
 
 
 
-
 setTimeout(function(){
-
 
 
 bg.style.opacity="1";
 
 
-
 bg.classList.add("zoom");
 
 
-
 },100);
-
 
 
 
@@ -269,11 +221,7 @@ bg.classList.add("zoom");
 
 
 
-
-img.src=
-
-imageFolder+filename;
-
+img.src=imageFolder+filename;
 
 
 }
@@ -282,22 +230,13 @@ imageFolder+filename;
 
 
 
-// 初回表示
-
 changeBackground();
 
 
 
-
-
-// 10秒ごとに変更
-
 setInterval(
-
 changeBackground,
-
 10000
-
 );
 
 
