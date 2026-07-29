@@ -35,12 +35,12 @@ body{
 
     transform:scale(1);
 
+
     transition:
         opacity 2s ease,
         transform 10s ease;
 
 }
-
 
 
 #random-background.zoom{
@@ -60,6 +60,7 @@ body{
     right:32px;
 
     bottom:28px;
+
 
     z-index:2;
 
@@ -104,7 +105,17 @@ body{
 
     font-size:12px;
 
-    letter-spacing:0.12em;
+    letter-spacing:0.18em;
+
+}
+
+
+
+/* 間隔調整 */
+
+.sub-text{
+
+    margin-left:-2px;
 
 }
 
@@ -122,7 +133,6 @@ body{
 </head>
 
 
-
 <body>
 
 
@@ -133,7 +143,7 @@ body{
 <a class="center-link"
 href="https://www.w-grafik.org/">
 
-<span class="main-text">Weiß</span> <span class="sub-text">Grafik</span>
+<span class="main-text">Weiß</span><span class="sub-text"> Grafik</span>
 
 </a>
 
@@ -154,10 +164,10 @@ const totalImages=48;
 let currentImage=0;
 
 
+
 const bg=document.getElementById(
 "random-background"
 );
-
 
 
 
