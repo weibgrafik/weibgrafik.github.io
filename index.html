@@ -26,7 +26,7 @@ body {
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
-  opacity:0;
+  opacity:1;
   transform:scale(1);
   transition:
     opacity 3s ease,
@@ -43,7 +43,7 @@ body {
 #background-filter {
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.15);
+  background:rgba(0,0,0,0);
   z-index:1;
 }
 
@@ -60,13 +60,6 @@ body {
 }
 
 
-/* 暗さ調整（必要なら数値変更） */
-#background-filter {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.15);
-  z-index:-1;
-}
 
 
 
