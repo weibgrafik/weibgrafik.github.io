@@ -25,15 +25,19 @@ body{
 
     position:fixed;
     inset:0;
+
     z-index:0;
+
 
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
 
+
     opacity:0;
 
     transform:scale(1);
+
 
     transition:
         opacity 2s ease,
@@ -57,23 +61,42 @@ body{
 
     position:fixed;
 
+
     right:32px;
 
     bottom:28px;
 
+
     z-index:2;
+
 
     color:#000;
 
+
     text-decoration:none;
+
 
     opacity:0.75;
 
+
     white-space:nowrap;
+
+
+    font-family:
+
+      "Helvetica Neue",
+      Helvetica,
+      Arial,
+      sans-serif;
+
+
+    font-weight:300;
 
 }
 
 
+
+/* Weiß */
 
 .main-text{
 
@@ -84,6 +107,8 @@ body{
 }
 
 
+
+/* Grafik */
 
 .sub-text{
 
@@ -127,7 +152,6 @@ href="https://www.w-grafik.org/">
 
 
 
-
 <script>
 
 (function(){
@@ -141,10 +165,10 @@ const totalImages=48;
 let currentImage=0;
 
 
-
 const bg=document.getElementById(
 "random-background"
 );
+
 
 
 
@@ -189,10 +213,12 @@ img.onload=function(){
 bg.style.opacity="0";
 
 
+
 setTimeout(function(){
 
 
 bg.style.backgroundImage=
+
 "url('"+imageFolder+filename+"')";
 
 
@@ -209,6 +235,7 @@ bg.style.opacity="1";
 bg.classList.add("zoom");
 
 
+
 },100);
 
 
@@ -221,7 +248,9 @@ bg.classList.add("zoom");
 
 
 
-img.src=imageFolder+filename;
+img.src=
+
+imageFolder+filename;
 
 
 }
@@ -229,14 +258,20 @@ img.src=imageFolder+filename;
 
 
 
+// 初回
 
 changeBackground();
 
 
 
+// 10秒ごと切替
+
 setInterval(
+
 changeBackground,
+
 10000
+
 );
 
 
