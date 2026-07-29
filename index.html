@@ -12,12 +12,9 @@ html, body {
 }
 
 
-/* 背景 */
+/* 初期背景 */
 body {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  overflow:hidden;
+  background:#ffffff;
 }
 
 
@@ -25,7 +22,7 @@ body {
 #random-background {
   position:fixed;
   inset:0;
-  z-index:-2;
+  z-index:0;
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
@@ -33,7 +30,27 @@ body {
   transform:scale(1);
   transition:
     opacity 3s ease,
-    transform 45s ease;
+    transform 20s ease;
+}
+
+
+#random-background.zoom {
+  transform:scale(1.08);
+}
+
+
+/* 暗さ調整 */
+#background-filter {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.15);
+  z-index:1;
+}
+
+
+.image-wrapper {
+  position:relative;
+  z-index:2;
 }
 
 
@@ -114,7 +131,6 @@ title="Weiß Grafik">
 </div>
 
 
-
 <script>
 
 (function(){
@@ -124,11 +140,9 @@ const totalImages = 48;
 
 let currentImage = 0;
 
-
 const bg = document.getElementById(
 "random-background"
 );
-
 
 
 function changeBackground(){
@@ -164,40 +178,60 @@ const img = new Image();
 img.onload=function(){
 
 
-/* フェードアウト */
+/*
+最初の画像は白背景から
+ゆっくり表示
+*/
+
+if(bg.style.backgroundImage===""){
+
+
+bg.style.backgroundImage =
+"url('" + imageFolder + filename + "')";
+
+
+setTimeout(function(){
+
+bg.style.opacity="1";
+bg.classList.add("zoom");
+
+},100);
+
+
+
+}
+
+
+/*
+2枚目以降はフェード切替
+*/
+
+else{
+
 
 bg.style.opacity="0";
-
 
 
 setTimeout(function(){
 
 
 bg.style.backgroundImage =
-"url('" +
-imageFolder +
-filename +
-"')";
-
+"url('" + imageFolder + filename + "')";
 
 
 bg.classList.remove("zoom");
 
 
-
 setTimeout(function(){
 
-
 bg.style.opacity="1";
-
 
 
 setTimeout(function(){
 
 bg.classList.add("zoom");
 
-},200);
-
+},100);
 
 
 },100);
@@ -205,6 +239,9 @@ bg.classList.add("zoom");
 
 
 },3000);
+
+
+}
 
 
 
@@ -216,22 +253,18 @@ img.src =
 imageFolder + filename;
 
 
-
 }
 
 
 
 // 初回
-
 changeBackground();
 
 
-
-// 45秒ごと
-
+// 20秒ごと
 setInterval(
 changeBackground,
-45000
+20000
 );
 
 
