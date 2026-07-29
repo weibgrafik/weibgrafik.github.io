@@ -46,7 +46,8 @@ body{
 }
 
 
-/* 中央リンク */
+
+/* 中央テキストリンク */
 
 .center-link{
 
@@ -56,12 +57,12 @@ body{
     color:#000;
     text-decoration:none;
 
-    font-size:28px;
+    font-size:14px;
+
     letter-spacing:0.25em;
 
-    padding:20px 40px;
-
-    background:rgba(255,255,255,0.85);
+    text-shadow:
+        0 1px 6px rgba(255,255,255,0.8);
 
 }
 
@@ -82,13 +83,19 @@ body{
 <body>
 
 
+<!-- 背景 -->
+
 <div id="random-background"></div>
 
+
+
+<!-- リンク -->
 
 <a class="center-link"
 href="https://www.w-grafik.org/">
 Weiß Grafik
 </a>
+
 
 
 
@@ -186,13 +193,13 @@ imageFolder+filename;
 
 
 
-// 初回表示
+// 初回
 
 changeBackground();
 
 
 
-// 10秒ごと切替
+// 10秒ごと
 
 setInterval(
 changeBackground,
