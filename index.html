@@ -28,7 +28,6 @@ body{
 
     z-index:0;
 
-
     background-size:cover;
     background-position:center;
     background-repeat:no-repeat;
@@ -61,7 +60,6 @@ body{
 
     position:fixed;
 
-
     right:32px;
 
     bottom:28px;
@@ -72,7 +70,6 @@ body{
 
     color:#000;
 
-
     text-decoration:none;
 
 
@@ -80,17 +77,6 @@ body{
 
 
     white-space:nowrap;
-
-
-    font-family:
-
-      "Helvetica Neue",
-      Helvetica,
-      Arial,
-      sans-serif;
-
-
-    font-weight:300;
 
 }
 
@@ -100,9 +86,19 @@ body{
 
 .main-text{
 
-    font-size:18px;
+    font-family:
+      "Hiragino Mincho ProN",
+      "Yu Mincho",
+      "Times New Roman",
+      serif;
 
-    letter-spacing:0.25em;
+
+    font-size:20px;
+
+    font-weight:600;
+
+
+    letter-spacing:0.12em;
 
 }
 
@@ -112,9 +108,22 @@ body{
 
 .sub-text{
 
+    font-family:
+      "Helvetica Neue",
+      Helvetica,
+      Arial,
+      sans-serif;
+
+
     font-size:11px;
 
-    letter-spacing:0.35em;
+    font-weight:300;
+
+
+    letter-spacing:0.18em;
+
+
+    margin-left:2px;
 
 }
 
@@ -145,9 +154,10 @@ body{
 <a class="center-link"
 href="https://www.w-grafik.org/">
 
-<span class="main-text">Weiß</span><span class="sub-text"> Grafik</span>
+<span class="main-text">Weiß</span><span class="sub-text">Grafik</span>
 
 </a>
+
 
 
 
@@ -165,6 +175,7 @@ const totalImages=48;
 let currentImage=0;
 
 
+
 const bg=document.getElementById(
 "random-background"
 );
@@ -175,14 +186,18 @@ const bg=document.getElementById(
 function changeBackground(){
 
 
+
 let next;
+
 
 
 do{
 
+
 next=Math.floor(
 Math.random()*totalImages
 )+1;
+
 
 
 }while(next===currentImage);
@@ -190,6 +205,7 @@ Math.random()*totalImages
 
 
 currentImage=next;
+
 
 
 
@@ -203,11 +219,15 @@ String(next).padStart(3,"0")+
 
 
 
+
+
 const img=new Image();
 
 
 
+
 img.onload=function(){
+
 
 
 bg.style.opacity="0";
@@ -217,9 +237,11 @@ bg.style.opacity="0";
 setTimeout(function(){
 
 
+
 bg.style.backgroundImage=
 
 "url('"+imageFolder+filename+"')";
+
 
 
 bg.classList.remove("zoom");
@@ -227,6 +249,7 @@ bg.classList.remove("zoom");
 
 
 setTimeout(function(){
+
 
 
 bg.style.opacity="1";
@@ -248,12 +271,15 @@ bg.classList.add("zoom");
 
 
 
+
 img.src=
 
 imageFolder+filename;
 
 
+
 }
+
 
 
 
