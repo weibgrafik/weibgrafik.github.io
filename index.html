@@ -18,7 +18,6 @@ body{
 }
 
 
-
 /* 背景 */
 
 #random-background{
@@ -32,11 +31,9 @@ body{
     background-position:center;
     background-repeat:no-repeat;
 
-
     opacity:0;
 
     transform:scale(1);
-
 
     transition:
         opacity 2s ease,
@@ -63,7 +60,6 @@ body{
     right:32px;
 
     bottom:28px;
-
 
     z-index:2;
 
@@ -108,7 +104,7 @@ body{
 
     font-size:12px;
 
-    letter-spacing:0.18em;
+    letter-spacing:0.12em;
 
 }
 
@@ -121,7 +117,6 @@ body{
 }
 
 
-
 </style>
 
 </head>
@@ -131,7 +126,6 @@ body{
 <body>
 
 
-
 <div id="random-background"></div>
 
 
@@ -139,7 +133,7 @@ body{
 <a class="center-link"
 href="https://www.w-grafik.org/">
 
-<span class="main-text">Weiß</span>&nbsp;<span class="sub-text">Grafik</span>
+<span class="main-text">Weiß</span> <span class="sub-text">Grafik</span>
 
 </a>
 
@@ -158,7 +152,6 @@ const totalImages=48;
 
 
 let currentImage=0;
-
 
 
 const bg=document.getElementById(
@@ -199,15 +192,11 @@ String(next).padStart(3,"0")+
 
 
 
-
-
 const img=new Image();
 
 
 
-
 img.onload=function(){
-
 
 
 bg.style.opacity="0";
@@ -217,11 +206,9 @@ bg.style.opacity="0";
 setTimeout(function(){
 
 
-
 bg.style.backgroundImage=
 
 "url('"+imageFolder+filename+"')";
-
 
 
 bg.classList.remove("zoom");
@@ -231,12 +218,10 @@ bg.classList.remove("zoom");
 setTimeout(function(){
 
 
-
 bg.style.opacity="1";
 
 
 bg.classList.add("zoom");
-
 
 
 },100);
@@ -251,10 +236,7 @@ bg.classList.add("zoom");
 
 
 
-img.src=
-
-imageFolder+filename;
-
+img.src=imageFolder+filename;
 
 
 }
@@ -263,7 +245,7 @@ imageFolder+filename;
 
 
 
-// 初回表示
+// 初回
 
 changeBackground();
 
@@ -284,7 +266,6 @@ changeBackground,
 })();
 
 </script>
-
 
 
 </body>
