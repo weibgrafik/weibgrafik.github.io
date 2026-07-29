@@ -68,7 +68,8 @@ body{
     z-index:2;
 
 
-    color:#fff;
+    color:#333;
+
 
     text-decoration:none;
 
@@ -86,13 +87,25 @@ body{
       Arial,
       sans-serif;
 
+}
+
+
+
+.main-text{
+
+    font-size:16px;
+
+    letter-spacing:0.18em;
+
+}
+
+
+
+.sub-text{
 
     font-size:12px;
 
-    font-weight:400;
-
-
-    letter-spacing:0.22em;
+    letter-spacing:0.18em;
 
 }
 
@@ -122,7 +135,9 @@ body{
 
 <a class="center-link"
 href="https://www.w-grafik.org/">
-Weiß&nbsp;&nbsp;Grafik
+
+<span class="main-text">Weiß</span>&nbsp;<span class="sub-text">Grafik</span>
+
 </a>
 
 
@@ -246,13 +261,9 @@ imageFolder+filename;
 
 
 
-// 初回
-
 changeBackground();
 
 
-
-// 10秒ごと切替
 
 setInterval(
 
