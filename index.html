@@ -39,18 +39,32 @@ body{
 
     opacity:0;
 
-
     z-index:0;
+
+
+    animation:
+
+        fadeIn 2s ease forwards,
+
+        zoomImage 10s ease forwards;
 
 }
 
 
 
-.bg-image.zoom{
+@keyframes fadeIn{
 
-    opacity:1;
+    from{
 
-    animation:zoomImage 10s ease forwards;
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
 
 }
 
@@ -64,7 +78,6 @@ body{
 
     }
 
-
     to{
 
         transform:scale(1.06);
@@ -72,7 +85,6 @@ body{
     }
 
 }
-
 
 
 
@@ -88,7 +100,7 @@ body{
     bottom:28px;
 
 
-    z-index:2;
+    z-index:10;
 
 
     color:#888;
@@ -143,6 +155,7 @@ body{
 }
 
 
+
 </style>
 
 </head>
@@ -151,18 +164,12 @@ body{
 <body>
 
 
-<img id="bg1" class="bg-image" src="">
-<img id="bg2" class="bg-image" src="">
-
-
-
 <a class="center-link"
 href="https://www.w-grafik.org/">
 
 <span class="main-text">Weiß</span><span class="sub-text"> Grafik</span>
 
 </a>
-
 
 
 
@@ -179,19 +186,8 @@ const totalImages=50;
 
 let currentImage=0;
 
-let active=0;
 
-
-
-const images=[
-
-document.getElementById("bg1"),
-
-document.getElementById("bg2")
-
-];
-
-
+let currentElement=null;
 
 
 
@@ -227,84 +223,54 @@ return folder+
 
 
 
-
 function changeBackground(){
 
 
 
-const next=images[1-active];
-
-const old=images[active];
+const img=document.createElement("img");
 
 
+img.className="bg-image";
 
-const src=randomImage();
-
-
-
-const preload=new Image();
+img.src=randomImage();
 
 
 
-preload.onload=function(){
+img.onload=function(){
 
 
 
-next.src=src;
+document.body.insertBefore(
+
+img,
+
+document.querySelector(".center-link")
+
+);
 
 
 
-/* 古い状態を完全解除 */
-
-next.classList.remove("zoom");
-
-next.style.opacity="0";
 
 
+/* 前の画像を削除 */
 
-void next.offsetWidth;
-
-
-
-/* フェード開始 */
-
-next.style.transition="opacity 2s ease";
-
-next.style.opacity="1";
-
-
-
-/* ズーム開始 */
+if(currentElement){
 
 setTimeout(function(){
 
+currentElement.remove();
 
-next.classList.add("zoom");
+},2000);
 
-
-},100);
-
-
-
-
-/* 古い画像を消す */
-
-old.style.opacity="0";
-
-
-old.classList.remove("zoom");
+}
 
 
 
-active=1-active;
+currentElement=img;
 
 
 
 };
-
-
-
-preload.src=src;
 
 
 
@@ -314,9 +280,13 @@ preload.src=src;
 
 
 
+// 初回
+
 changeBackground();
 
 
+
+// 10秒ごと
 
 setInterval(
 
