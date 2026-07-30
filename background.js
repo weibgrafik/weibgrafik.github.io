@@ -1,197 +1,110 @@
 (() => {
 
-const folder = "bg/";
-const totalImages = 50;
 
-const changeTime = 10000;
-const fadeTime = 2000;
-
-let history = [];
-let active = 0;
+const folder="bg/";
+const totalImages=50;
 
 
-const container =
-document.getElementById("bg-container");
+let history=[];
+let active=0;
 
 
-const loading =
-document.getElementById("loading");
-
-
-
-const layers = [];
-
-
-for(let i=0;i<2;i++){
-
-    const img =
-    document.createElement("img");
-
-    img.className="bg";
-
-    img.style.transition =
-    `opacity ${fadeTime}ms ease`;
-
-    container.appendChild(img);
-
-    layers.push(img);
-
-}
-
+const layers=[
+document.getElementById("bg1"),
+document.getElementById("bg2")
+];
 
 
 
 function randomImage(){
 
+let n;
 
-    let n;
+do{
 
+n=Math.floor(
+Math.random()*totalImages
+)+1;
 
-    do{
-
-        n =
-        Math.floor(
-            Math.random()*totalImages
-        )+1;
-
-
-    }while(history.includes(n));
+}while(history.includes(n));
 
 
-    history.push(n);
+history.push(n);
 
 
-    if(history.length>10){
-
-        history.shift();
-
-    }
+if(history.length>10){
+history.shift();
+}
 
 
-    return (
-        folder+
-        "bg-"+
-        String(n).padStart(3,"0")+
-        ".webp"
-    );
+return folder+
+"bg-"+
+String(n).padStart(3,"0")+
+".webp";
 
 }
 
 
 
 
-function loadImage(src){
+function change(){
 
 
-    return new Promise(resolve=>{
+const next =
+layers[1-active];
+
+const old =
+layers[active];
 
 
-        const img=new Image();
-
-
-        img.onload=()=>resolve(true);
-
-        img.onerror=()=>resolve(false);
-
-
-        img.src=src;
-
-
-    });
-
-
-}
+const src =
+randomImage();
 
 
 
+const preload=new Image();
 
 
-async function change(){
+preload.onload=function(){
 
 
-    const next =
-    layers[1-active];
-
-
-    const old =
-    layers[active];
-
-
-    const src =
-    randomImage();
+next.src=src;
 
 
 
-    const ok =
-    await loadImage(src);
+next.classList.remove(
+"zoom"
+);
 
 
-    if(!ok){
-
-        return;
-
-    }
+void next.offsetWidth;
 
 
 
-    next.src=src;
-
-
-    next.style.opacity="0";
-
-
-    next.style.transform="scale(1)";
+next.classList.add(
+"show",
+"zoom"
+);
 
 
 
-    requestAnimationFrame(()=>{
-
-
-        next.style.opacity="1";
-
-
-        next.animate(
-
-        [
-            {
-                transform:"scale(1)"
-            },
-            {
-                transform:"scale(1.06)"
-            }
-
-        ],
-
-        {
-            duration:changeTime,
-            easing:"ease",
-            fill:"forwards"
-        }
-
-        );
-
-
-        old.style.opacity="0";
-
-
-    });
+old.classList.remove(
+"show"
+);
 
 
 
-    active = 1-active;
+active=1-active;
+
+
+};
 
 
 
-
-    if(loading){
-
-        loading.classList.add("hide");
-
-    }
+preload.src=src;
 
 
 }
-
 
 
 
@@ -199,12 +112,10 @@ change();
 
 
 setInterval(
-
 change,
-
-changeTime
-
+10000
 );
+
 
 
 })();
