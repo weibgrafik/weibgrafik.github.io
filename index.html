@@ -107,14 +107,6 @@ body{
 
     letter-spacing:0.18em;
 
-}
-
-
-
-/* 間隔調整 */
-
-.sub-text{
-
     margin-left:-2px;
 
 }
@@ -164,7 +156,6 @@ const totalImages=50;
 let currentImage=0;
 
 
-
 const bg=document.getElementById(
 "random-background"
 );
@@ -209,6 +200,7 @@ const img=new Image();
 img.onload=function(){
 
 
+
 bg.style.opacity="0";
 
 
@@ -216,22 +208,33 @@ bg.style.opacity="0";
 setTimeout(function(){
 
 
+
 bg.style.backgroundImage=
 
 "url('"+imageFolder+filename+"')";
 
 
+
+/* ズーム状態をリセット */
+
 bg.classList.remove("zoom");
+
+
+/* ブラウザに反映させる */
+
+void bg.offsetWidth;
 
 
 
 setTimeout(function(){
 
 
+
 bg.style.opacity="1";
 
 
 bg.classList.add("zoom");
+
 
 
 },100);
@@ -246,7 +249,9 @@ bg.classList.add("zoom");
 
 
 
-img.src=imageFolder+filename;
+img.src=
+
+imageFolder+filename;
 
 
 }
