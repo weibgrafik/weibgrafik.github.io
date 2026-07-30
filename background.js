@@ -1,113 +1,78 @@
-/* =========================================================
-   Weiß Grafik
-   background.js draft ver.1
-
-   背景画像管理
-========================================================= */
-
-
 (() => {
 
+const folder = "bg/";
+const totalImages = 50;
 
-const CONFIG = {
+const changeTime = 10000;
+const fadeTime = 2000;
 
-    folder : "bg/",
-
-    totalImages : 50,
-
-    changeTime : 10000,
-
-    fadeTime : 2000,
-
-    zoomScale : 1.06,
-
-    historyLength : 10
-
-};
-
+let history = [];
+let active = 0;
 
 
 const container =
-    document.getElementById("bg-container");
+document.getElementById("bg-container");
 
 
 const loading =
-    document.getElementById("loading");
+document.getElementById("loading");
 
 
 
-let history = [];
-
-let currentImage = null;
-
-let currentNumber = 0;
+const layers = [];
 
 
+for(let i=0;i<2;i++){
 
-/* =========================================================
-   ランダム画像取得
-========================================================= */
+    const img =
+    document.createElement("img");
+
+    img.className="bg";
+
+    img.style.transition =
+    `opacity ${fadeTime}ms ease`;
+
+    container.appendChild(img);
+
+    layers.push(img);
+
+}
 
 
-function getRandomNumber(){
 
 
-    let num;
+function randomImage(){
 
 
-    do {
+    let n;
 
-        num =
+
+    do{
+
+        n =
         Math.floor(
-            Math.random() *
-            CONFIG.totalImages
-        ) + 1;
+            Math.random()*totalImages
+        )+1;
 
 
-    } while(
-        history.includes(num)
-    );
+    }while(history.includes(n));
 
 
-    history.push(num);
+    history.push(n);
 
 
-    if(history.length >
-       CONFIG.historyLength){
+    if(history.length>10){
 
         history.shift();
 
     }
 
 
-    currentNumber = num;
-
-
-    return num;
-
-}
-
-
-
-
-function getImagePath(){
-
-
-    const num =
-    getRandomNumber();
-
-
     return (
-
-        CONFIG.folder +
-
-        "bg-" +
-
-        String(num)
-        .padStart(3,"0") +
-
+        folder+
+        "bg-"+
+        String(n).padStart(3,"0")+
         ".webp"
-
     );
 
 }
@@ -115,31 +80,21 @@ function getImagePath(){
 
 
 
-/* =========================================================
-   画像プリロード
-========================================================= */
+function loadImage(src){
 
 
-function preload(src){
+    return new Promise(resolve=>{
 
 
-    return new Promise(
-        resolve => {
+        const img=new Image();
 
 
-        const img =
-        new Image();
+        img.onload=()=>resolve(true);
+
+        img.onerror=()=>resolve(false);
 
 
-        img.onload =
-        () => resolve(img);
-
-
-        img.onerror =
-        () => resolve(null);
-
-
-        img.src = src;
+        img.src=src;
 
 
     });
@@ -150,27 +105,28 @@ function preload(src){
 
 
 
-/* =========================================================
-   背景表示
-========================================================= */
+
+async function change(){
 
 
-async function changeBackground(){
+    const next =
+    layers[1-active];
+
+
+    const old =
+    layers[active];
 
 
     const src =
-    getImagePath();
+    randomImage();
 
 
 
-    const loaded =
-    await preload(src);
+    const ok =
+    await loadImage(src);
 
 
-
-    if(!loaded){
-
-        changeBackground();
+    if(!ok){
 
         return;
 
@@ -178,125 +134,58 @@ async function changeBackground(){
 
 
 
-    const img =
-    document.createElement("img");
+    next.src=src;
+
+
+    next.style.opacity="0";
+
+
+    next.style.transform="scale(1)";
 
 
 
-    img.className =
-    "bg";
+    requestAnimationFrame(()=>{
 
 
-
-    img.src =
-    src;
+        next.style.opacity="1";
 
 
+        next.animate(
 
-    container.appendChild(img);
-
-
-
-
-    /*
-       強制描画
-    */
-
-    requestAnimationFrame(() => {
-
-
-        img.style.transition =
-        `opacity ${CONFIG.fadeTime}ms ease`;
-
-
-
-        img.style.opacity = "1";
-
-
-
-        img.animate(
-
-            [
-
-                {
-                    transform:"scale(1)"
-                },
-
-                {
-                    transform:
-                    `scale(${CONFIG.zoomScale})`
-                }
-
-            ],
-
+        [
             {
-
-                duration:
-                CONFIG.changeTime,
-
-                easing:
-                "ease",
-
-                fill:
-                "forwards"
-
+                transform:"scale(1)"
+            },
+            {
+                transform:"scale(1.06)"
             }
 
+        ],
+
+        {
+            duration:changeTime,
+            easing:"ease",
+            fill:"forwards"
+        }
+
         );
+
+
+        old.style.opacity="0";
 
 
     });
 
 
 
-
-
-    /*
-       古い画像削除
-    */
-
-    if(currentImage){
-
-
-        currentImage.style.opacity =
-        "0";
-
-
-        setTimeout(() => {
-
-
-            currentImage.remove();
-
-
-        },
-        CONFIG.fadeTime);
-
-
-    }
+    active = 1-active;
 
 
 
-    currentImage = img;
-
-
-
-    /*
-       初回白背景解除
-    */
 
     if(loading){
 
-
-        setTimeout(() => {
-
-
-            loading.classList.add(
-                "hide"
-            );
-
-
-        },500);
-
+        loading.classList.add("hide");
 
     }
 
@@ -306,24 +195,16 @@ async function changeBackground(){
 
 
 
-
-/* =========================================================
-   START
-========================================================= */
-
-
-changeBackground();
-
+change();
 
 
 setInterval(
 
-    changeBackground,
+change,
 
-    CONFIG.changeTime
+changeTime
 
 );
-
 
 
 })();
