@@ -53,23 +53,50 @@ body{
 
 .bg{
 
-    position:absolute;
+position:absolute;
 
-    inset:0;
+inset:0;
 
-    width:100%;
+width:100%;
 
-    height:100%;
+height:100%;
 
-    object-fit:cover;
+object-fit:cover;
 
-    object-position:center;
+opacity:0;
 
-    opacity:0;
+transform:scale(1);
 
-    will-change:
-        opacity,
-        transform;
+transition:
+opacity 2s ease;
+
+}
+
+
+.bg.show{
+
+opacity:1;
+
+}
+
+
+.bg.zoom{
+
+animation:
+zoom 10s ease forwards;
+
+}
+
+
+@keyframes zoom{
+
+from{
+transform:scale(1);
+}
+
+to{
+transform:scale(1.06);
+}
 
 }
 
