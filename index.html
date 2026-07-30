@@ -40,17 +40,7 @@ body{
     opacity:0;
 
 
-    transform:scale(1);
-
-
     z-index:0;
-
-
-    transition:
-
-        opacity 2s ease,
-
-        transform 10s ease;
 
 }
 
@@ -58,9 +48,32 @@ body{
 
 .bg-image.zoom{
 
-    transform:scale(1.06);
+    opacity:1;
+
+    animation:zoomImage 10s ease forwards;
 
 }
+
+
+
+@keyframes zoomImage{
+
+    from{
+
+        transform:scale(1);
+
+    }
+
+
+    to{
+
+        transform:scale(1.06);
+
+    }
+
+}
+
+
 
 
 
@@ -153,6 +166,7 @@ href="https://www.w-grafik.org/">
 
 
 
+
 <script>
 
 (function(){
@@ -240,22 +254,21 @@ next.src=src;
 
 
 
-/* ズーム状態リセット */
+/* 古い状態を完全解除 */
 
 next.classList.remove("zoom");
-
 
 next.style.opacity="0";
 
 
-
-/* CSS変化を強制反映 */
 
 void next.offsetWidth;
 
 
 
 /* フェード開始 */
+
+next.style.transition="opacity 2s ease";
 
 next.style.opacity="1";
 
@@ -273,9 +286,13 @@ next.classList.add("zoom");
 
 
 
+
 /* 古い画像を消す */
 
 old.style.opacity="0";
+
+
+old.classList.remove("zoom");
 
 
 
@@ -297,13 +314,9 @@ preload.src=src;
 
 
 
-// 初回
-
 changeBackground();
 
 
-
-// 10秒ごと
 
 setInterval(
 
