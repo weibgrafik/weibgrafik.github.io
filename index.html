@@ -18,9 +18,10 @@ body{
 }
 
 
-/* 背景レイヤー */
 
-.background-layer{
+/* 背景 */
+
+#random-background{
 
     position:fixed;
 
@@ -52,12 +53,11 @@ body{
 
 
 
-.background-layer.zoom{
+#random-background.zoom{
 
     transform:scale(1.06);
 
 }
-
 
 
 
@@ -76,6 +76,7 @@ body{
 
 
     color:#888;
+
 
     text-decoration:none;
 
@@ -126,26 +127,17 @@ body{
 }
 
 
-
 </style>
 
 </head>
 
 
-
 <body>
 
 
-
-<!-- 背景 -->
-
-<div id="bg1" class="background-layer"></div>
-
-<div id="bg2" class="background-layer"></div>
+<div id="random-background"></div>
 
 
-
-<!-- テキスト -->
 
 <a class="center-link"
 href="https://www.w-grafik.org/">
@@ -171,17 +163,9 @@ const totalImages=50;
 let currentImage=0;
 
 
-let currentLayer=0;
-
-
-
-const layers=[
-
-document.getElementById("bg1"),
-
-document.getElementById("bg2")
-
-];
+const bg=document.getElementById(
+"random-background"
+);
 
 
 
@@ -195,6 +179,7 @@ let next;
 
 do{
 
+
 next=Math.floor(
 Math.random()*totalImages
 )+1;
@@ -207,15 +192,9 @@ Math.random()*totalImages
 currentImage=next;
 
 
-return (
-
-"bg-"+
-
+return "bg-"+
 String(next).padStart(3,"0")+
-
-".webp"
-
-);
+".webp";
 
 
 }
@@ -224,20 +203,7 @@ String(next).padStart(3,"0")+
 
 
 
-
 function changeBackground(){
-
-
-
-const nextLayer=
-
-layers[currentLayer];
-
-
-
-const oldLayer=
-
-layers[1-currentLayer];
 
 
 
@@ -253,53 +219,40 @@ img.onload=function(){
 
 
 
-nextLayer.style.backgroundImage=
+/* 完全リセット */
+
+bg.classList.remove("zoom");
+
+bg.style.transform="scale(1)";
+
+
+void bg.offsetWidth;
+
+
+
+/* 新しい背景 */
+
+bg.style.backgroundImage=
 
 "url('"+imageFolder+filename+"')";
 
 
 
+/* 表示 */
 
-
-// ズーム初期化
-
-nextLayer.classList.remove("zoom");
-
-
-void nextLayer.offsetWidth;
+bg.style.opacity="1";
 
 
 
-
-// 表示
-
-nextLayer.style.opacity="1";
-
-
+/* ズーム開始 */
 
 setTimeout(function(){
 
 
-nextLayer.classList.add("zoom");
+bg.classList.add("zoom");
 
 
 },100);
-
-
-
-
-// 古い画像を消す
-
-oldLayer.style.opacity="0";
-
-
-
-
-// 次回用
-
-currentLayer=
-
-1-currentLayer;
 
 
 
@@ -307,13 +260,12 @@ currentLayer=
 
 
 
-img.src=
-
-imageFolder+filename;
+img.src=imageFolder+filename;
 
 
 
 }
+
 
 
 
