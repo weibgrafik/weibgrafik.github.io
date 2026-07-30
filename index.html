@@ -19,9 +19,9 @@ body{
 
 
 
-/* 背景画像 */
+/* 背景 */
 
-.bg-image{
+.bg-layer{
 
     position:fixed;
 
@@ -39,32 +39,24 @@ body{
 
     opacity:0;
 
+
     z-index:0;
-
-
-    animation:
-
-        fadeIn 2s ease forwards,
-
-        zoomImage 10s ease forwards;
 
 }
 
 
 
-@keyframes fadeIn{
+.bg-layer.active{
 
-    from{
+    opacity:1;
 
-        opacity:0;
+}
 
-    }
 
-    to{
 
-        opacity:1;
+.bg-layer.zoom{
 
-    }
+    animation:zoomImage 10s ease forwards;
 
 }
 
@@ -85,6 +77,18 @@ body{
     }
 
 }
+
+
+
+
+/* フェード */
+
+.fade{
+
+    transition:opacity 2s ease;
+
+}
+
 
 
 
@@ -164,12 +168,20 @@ body{
 <body>
 
 
+
+<img id="bg1" class="bg-layer fade" src="">
+
+<img id="bg2" class="bg-layer fade" src="">
+
+
+
 <a class="center-link"
 href="https://www.w-grafik.org/">
 
 <span class="main-text">Weiß</span><span class="sub-text"> Grafik</span>
 
 </a>
+
 
 
 
@@ -184,14 +196,28 @@ const folder="bg/";
 const totalImages=50;
 
 
+let active=0;
+
 let currentImage=0;
 
 
-let currentElement=null;
+let history=[];
 
 
 
-function randomImage(){
+const layers=[
+
+document.getElementById("bg1"),
+
+document.getElementById("bg2")
+
+];
+
+
+
+
+
+function getImage(){
 
 
 let next;
@@ -204,21 +230,32 @@ Math.random()*totalImages
 )+1;
 
 
-}while(next===currentImage);
+}while(
+
+history.includes(next)
+
+);
 
 
 
-currentImage=next;
+history.push(next);
 
 
 
-return folder+
+if(history.length>10){
 
-"bg-"+String(next).padStart(3,"0")+
-
-".webp";
+history.shift();
 
 }
+
+
+
+return "bg-"+String(next).padStart(3,"0")+".webp";
+
+
+}
+
+
 
 
 
@@ -227,12 +264,17 @@ function changeBackground(){
 
 
 
-const img=document.createElement("img");
+const nextLayer=layers[1-active];
+
+const oldLayer=layers[active];
 
 
-img.className="bg-image";
 
-img.src=randomImage();
+const img=new Image();
+
+
+
+const filename=getImage();
 
 
 
@@ -240,33 +282,49 @@ img.onload=function(){
 
 
 
-document.body.insertBefore(
+nextLayer.src=
 
-img,
-
-document.querySelector(".center-link")
-
-);
+folder+filename;
 
 
 
 
+/* アニメーション完全リセット */
 
-/* 前の画像を削除 */
+nextLayer.classList.remove("zoom");
 
-if(currentElement){
+nextLayer.style.opacity="0";
+
+void nextLayer.offsetWidth;
+
+
+
+/* 表示 */
+
+nextLayer.style.opacity="1";
+
+
+
+/* ズーム開始 */
 
 setTimeout(function(){
 
-currentElement.remove();
 
-},2000);
-
-}
+nextLayer.classList.add("zoom");
 
 
+},50);
 
-currentElement=img;
+
+
+
+/* 古い画像を消す */
+
+oldLayer.style.opacity="0";
+
+
+
+active=1-active;
 
 
 
@@ -274,19 +332,20 @@ currentElement=img;
 
 
 
+img.src=
+
+folder+filename;
+
+
+
 }
 
 
 
 
-
-// 初回
-
 changeBackground();
 
 
-
-// 10秒ごと
 
 setInterval(
 
