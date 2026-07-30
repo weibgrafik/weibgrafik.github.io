@@ -12,16 +12,14 @@ html,body{
     overflow:hidden;
 }
 
-
 body{
-    background:#ffffff;
+    background:#fff;
 }
-
 
 
 /* 背景 */
 
-.bg-layer{
+#background{
 
     position:fixed;
 
@@ -31,13 +29,14 @@ body{
 
     height:100%;
 
-
     object-fit:cover;
 
     object-position:center;
 
 
     opacity:0;
+
+    transform:scale(1);
 
 
     z-index:0;
@@ -46,49 +45,50 @@ body{
 
 
 
-.bg-layer.active{
+/* フェード */
 
-    opacity:1;
+.fade-in{
 
-}
-
-
-
-.bg-layer.zoom{
-
-    animation:zoomImage 10s ease forwards;
+    animation:fade 2s ease forwards;
 
 }
 
 
-
-@keyframes zoomImage{
+@keyframes fade{
 
     from{
-
-        transform:scale(1);
-
+        opacity:0;
     }
 
     to{
-
-        transform:scale(1.06);
-
+        opacity:1;
     }
 
 }
 
 
 
+/* ズーム */
 
-/* フェード */
+.zoom{
 
-.fade{
-
-    transition:opacity 2s ease;
+    animation:zoom 10s ease forwards;
 
 }
 
+
+
+@keyframes zoom{
+
+    from{
+        transform:scale(1);
+    }
+
+    to{
+        transform:scale(1.06);
+    }
+
+}
 
 
 
@@ -103,61 +103,46 @@ body{
 
     bottom:28px;
 
-
-    z-index:10;
+    z-index:5;
 
 
     color:#888;
 
-
     text-decoration:none;
 
 
-    opacity:0.85;
-
-
-    white-space:nowrap;
+    opacity:.85;
 
 
     font-family:
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
 
-      "Helvetica Neue",
-      Helvetica,
-      Arial,
-      sans-serif;
+    white-space:nowrap;
 
 }
-
 
 
 .main-text{
 
     font-size:16px;
 
-    letter-spacing:0.18em;
+    letter-spacing:.18em;
 
 }
-
 
 
 .sub-text{
 
     font-size:12px;
 
-    letter-spacing:0.18em;
+    letter-spacing:.18em;
 
     margin-left:-2px;
 
 }
-
-
-
-.center-link:hover{
-
-    opacity:0.6;
-
-}
-
 
 
 </style>
@@ -168,10 +153,7 @@ body{
 <body>
 
 
-
-<img id="bg1" class="bg-layer fade" src="">
-
-<img id="bg2" class="bg-layer fade" src="">
+<img id="background" src="">
 
 
 
@@ -185,8 +167,8 @@ href="https://www.w-grafik.org/">
 
 
 
-
 <script>
+
 
 (function(){
 
@@ -196,53 +178,39 @@ const folder="bg/";
 const totalImages=50;
 
 
-let active=0;
-
-let currentImage=0;
+let current=0;
 
 
 let history=[];
 
 
 
-const layers=[
-
-document.getElementById("bg1"),
-
-document.getElementById("bg2")
-
-];
+const bg=document.getElementById("background");
 
 
 
 
 
-function getImage(){
+function getRandom(){
 
 
-let next;
+let n;
 
 
 do{
 
-next=Math.floor(
-Math.random()*totalImages
-)+1;
+n=Math.floor(Math.random()*totalImages)+1;
 
 
-}while(
-
-history.includes(next)
-
-);
+}while(history.includes(n));
 
 
 
-history.push(next);
+history.push(n);
 
 
 
-if(history.length>10){
+if(history.length>15){
 
 history.shift();
 
@@ -250,7 +218,9 @@ history.shift();
 
 
 
-return "bg-"+String(next).padStart(3,"0")+".webp";
+return folder+
+"bg-"+String(n).padStart(3,"0")+
+".webp";
 
 
 }
@@ -258,73 +228,46 @@ return "bg-"+String(next).padStart(3,"0")+".webp";
 
 
 
-
-
 function changeBackground(){
 
 
-
-const nextLayer=layers[1-active];
-
-const oldLayer=layers[active];
+const preload=new Image();
 
 
-
-const img=new Image();
+const src=getRandom();
 
 
 
-const filename=getImage();
+preload.onload=function(){
+
+
+bg.classList.remove(
+"fade-in",
+"zoom"
+);
 
 
 
-img.onload=function(){
+void bg.offsetWidth;
 
 
 
-nextLayer.src=
-
-folder+filename;
+bg.src=src;
 
 
 
-
-/* アニメーション完全リセット */
-
-nextLayer.classList.remove("zoom");
-
-nextLayer.style.opacity="0";
-
-void nextLayer.offsetWidth;
-
-
-
-/* 表示 */
-
-nextLayer.style.opacity="1";
-
-
-
-/* ズーム開始 */
+/* 少し待ってから開始 */
 
 setTimeout(function(){
 
 
-nextLayer.classList.add("zoom");
+bg.classList.add(
+"fade-in",
+"zoom"
+);
 
 
 },50);
-
-
-
-
-/* 古い画像を消す */
-
-oldLayer.style.opacity="0";
-
-
-
-active=1-active;
 
 
 
@@ -332,10 +275,7 @@ active=1-active;
 
 
 
-img.src=
-
-folder+filename;
-
+preload.src=src;
 
 
 }
@@ -358,6 +298,7 @@ changeBackground,
 
 
 })();
+
 
 </script>
 
