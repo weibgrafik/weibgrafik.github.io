@@ -18,36 +18,46 @@ body{
 }
 
 
-/* 背景 */
+/* 背景レイヤー */
 
-#random-background{
+.background-layer{
 
     position:fixed;
+
     inset:0;
 
     z-index:0;
 
+
     background-size:cover;
+
     background-position:center;
+
     background-repeat:no-repeat;
 
+
     opacity:0;
+
 
     transform:scale(1);
 
 
     transition:
+
         opacity 2s ease,
+
         transform 10s ease;
 
 }
 
 
-#random-background.zoom{
+
+.background-layer.zoom{
 
     transform:scale(1.06);
 
 }
+
 
 
 
@@ -87,8 +97,6 @@ body{
 
 
 
-/* Weiß */
-
 .main-text{
 
     font-size:16px;
@@ -98,8 +106,6 @@ body{
 }
 
 
-
-/* Grafik */
 
 .sub-text{
 
@@ -120,17 +126,26 @@ body{
 }
 
 
+
 </style>
 
 </head>
 
 
+
 <body>
 
 
-<div id="random-background"></div>
+
+<!-- 背景 -->
+
+<div id="bg1" class="background-layer"></div>
+
+<div id="bg2" class="background-layer"></div>
 
 
+
+<!-- テキスト -->
 
 <a class="center-link"
 href="https://www.w-grafik.org/">
@@ -156,13 +171,23 @@ const totalImages=50;
 let currentImage=0;
 
 
-const bg=document.getElementById(
-"random-background"
-);
+let currentLayer=0;
 
 
 
-function changeBackground(){
+const layers=[
+
+document.getElementById("bg1"),
+
+document.getElementById("bg2")
+
+];
+
+
+
+
+
+function getRandomImage(){
 
 
 let next;
@@ -182,14 +207,41 @@ Math.random()*totalImages
 currentImage=next;
 
 
-
-const filename=
+return (
 
 "bg-"+
 
 String(next).padStart(3,"0")+
 
-".webp";
+".webp"
+
+);
+
+
+}
+
+
+
+
+
+
+function changeBackground(){
+
+
+
+const nextLayer=
+
+layers[currentLayer];
+
+
+
+const oldLayer=
+
+layers[1-currentLayer];
+
+
+
+const filename=getRandomImage();
 
 
 
@@ -201,47 +253,53 @@ img.onload=function(){
 
 
 
-bg.style.opacity="0";
-
-
-
-setTimeout(function(){
-
-
-
-bg.style.backgroundImage=
+nextLayer.style.backgroundImage=
 
 "url('"+imageFolder+filename+"')";
 
 
 
-/* ズーム状態をリセット */
-
-bg.classList.remove("zoom");
 
 
-/* ブラウザに反映させる */
+// ズーム初期化
 
-void bg.offsetWidth;
+nextLayer.classList.remove("zoom");
+
+
+void nextLayer.offsetWidth;
+
+
+
+
+// 表示
+
+nextLayer.style.opacity="1";
 
 
 
 setTimeout(function(){
 
 
-
-bg.style.opacity="1";
-
-
-bg.classList.add("zoom");
-
+nextLayer.classList.add("zoom");
 
 
 },100);
 
 
 
-},2000);
+
+// 古い画像を消す
+
+oldLayer.style.opacity="0";
+
+
+
+
+// 次回用
+
+currentLayer=
+
+1-currentLayer;
 
 
 
@@ -254,8 +312,8 @@ img.src=
 imageFolder+filename;
 
 
-}
 
+}
 
 
 
@@ -266,7 +324,7 @@ changeBackground();
 
 
 
-// 10秒ごと切替
+// 10秒ごと
 
 setInterval(
 
