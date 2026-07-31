@@ -97,6 +97,17 @@ old.classList.remove(
 active=1-active;
 
 
+const loading =
+document.getElementById("loading");
+
+
+if(loading){
+
+    loading.classList.add("hide");
+
+}
+
+
 };
 
 
