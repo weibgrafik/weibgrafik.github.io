@@ -2,7 +2,7 @@
 
 
 const folder="bg/";
-const totalImages=50;
+const totalImages=52;
 
 
 let history=[];
