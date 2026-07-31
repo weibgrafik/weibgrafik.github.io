@@ -2,10 +2,11 @@
 
 
 const folder="bg/";
-const totalImages=52;
 
+let images=[];
 
 let history=[];
+
 let active=0;
 
 
@@ -16,116 +17,188 @@ document.getElementById("bg2")
 
 
 
+/* =========================
+   画像リスト読み込み
+========================= */
+
+async function loadImages(){
+
+
+    const response =
+    await fetch(
+        folder+"images.json"
+    );
+
+
+    images =
+    await response.json();
+
+
+}
+
+
+
+
+/* =========================
+   ランダム画像取得
+========================= */
+
 function randomImage(){
 
-let n;
 
-do{
-
-n=Math.floor(
-Math.random()*totalImages
-)+1;
-
-}while(history.includes(n));
+    let n;
 
 
-history.push(n);
+    do{
+
+        n =
+        Math.floor(
+            Math.random()*images.length
+        );
 
 
-if(history.length>10){
-history.shift();
+    }while(
+        history.includes(n)
+    );
+
+
+
+    history.push(n);
+
+
+
+    if(history.length>10){
+
+        history.shift();
+
+    }
+
+
+
+    return folder + images[n];
+
+
 }
 
 
-return folder+
-"bg-"+
-String(n).padStart(3,"0")+
-".webp";
-
-}
 
 
-
+/* =========================
+   背景切替
+========================= */
 
 function change(){
 
 
-const next =
-layers[1-active];
-
-const old =
-layers[active];
+    const next =
+    layers[1-active];
 
 
-const src =
-randomImage();
+    const old =
+    layers[active];
 
 
 
-const preload=new Image();
-
-
-preload.onload=function(){
-
-
-next.src=src;
+    const src =
+    randomImage();
 
 
 
-next.classList.remove(
-"zoom"
-);
-
-
-void next.offsetWidth;
+    const preload =
+    new Image();
 
 
 
-next.classList.add(
-"show",
-"zoom"
-);
+    preload.onload=function(){
+
+
+        next.src=src;
 
 
 
-old.classList.remove(
-"show"
-);
+        next.classList.remove(
+            "zoom"
+        );
+
+
+        void next.offsetWidth;
 
 
 
-active=1-active;
+        next.classList.add(
+            "show",
+            "zoom"
+        );
 
 
-const loading =
-document.getElementById("loading");
+
+        old.classList.remove(
+            "show"
+        );
 
 
-if(loading){
 
-    loading.classList.add("hide");
+        active =
+        1-active;
+
+
+
+        const loading =
+        document.getElementById(
+            "loading"
+        );
+
+
+        if(loading){
+
+            loading.classList.add(
+                "hide"
+            );
+
+        }
+
+
+    };
+
+
+
+    preload.src=src;
+
 
 }
 
 
-};
+
+
+/* =========================
+   START
+========================= */
+
+
+async function start(){
+
+
+    await loadImages();
+
+
+    change();
 
 
 
-preload.src=src;
+    setInterval(
+
+        change,
+
+        10000
+
+    );
 
 
 }
 
 
 
-change();
-
-
-setInterval(
-change,
-10000
-);
+start();
 
 
 
