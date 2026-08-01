@@ -1,82 +1,97 @@
 (() => {
 
 
-const folder="bg/";
+const folder = "bg/";
 
-let images=[];
+let images = [];
 
-let history=[];
+let playList = [];
 
-let active=0;
+let playIndex = 0;
+
+let active = 0;
 
 
-const layers=[
-document.getElementById("bg1"),
-document.getElementById("bg2")
+const layers = [
+    document.getElementById("bg1"),
+    document.getElementById("bg2")
 ];
 
 
 
 /* =========================
-   画像リスト読み込み
+   images.json 読み込み
 ========================= */
 
 async function loadImages(){
 
-
-    const response =
-    await fetch(
-        folder+"images.json"
+    const response = await fetch(
+        folder + "images.json"
     );
 
-
-    images =
-    await response.json();
-
+    images = await response.json();
 
 }
 
 
 
-
 /* =========================
-   ランダム画像取得
+   画像順番をシャッフル
 ========================= */
 
-function randomImage(){
+function shuffleImages(){
+
+    playList = [...images];
 
 
-    let n;
+    for(
+        let i = playList.length - 1;
+        i > 0;
+        i--
+    ){
 
-
-    do{
-
-        n =
+        const j =
         Math.floor(
-            Math.random()*images.length
+            Math.random() * (i + 1)
         );
 
 
-    }while(
-        history.includes(n)
-    );
-
-
-
-    history.push(n);
-
-
-
-    if(history.length>10){
-
-        history.shift();
+        [
+            playList[i],
+            playList[j]
+        ] =
+        [
+            playList[j],
+            playList[i]
+        ];
 
     }
 
 
+    playIndex = 0;
 
-    return folder + images[n];
+}
 
+
+
+/* =========================
+   次の画像取得
+========================= */
+
+function nextImage(){
+
+
+    if(
+        playList.length === 0 ||
+        playIndex >= playList.length
+    ){
+
+        shuffleImages();
+
+    }
+
+
+    return folder + playList[playIndex++];
 
 }
 
@@ -91,16 +106,15 @@ function change(){
 
 
     const next =
-    layers[1-active];
+    layers[1 - active];
 
 
     const old =
     layers[active];
 
 
-
     const src =
-    randomImage();
+    nextImage();
 
 
 
@@ -109,10 +123,10 @@ function change(){
 
 
 
-    preload.onload=function(){
+    preload.onload = function(){
 
 
-        next.src=src;
+        next.src = src;
 
 
 
@@ -139,7 +153,7 @@ function change(){
 
 
         active =
-        1-active;
+        1 - active;
 
 
 
@@ -162,7 +176,7 @@ function change(){
 
 
 
-    preload.src=src;
+    preload.src = src;
 
 
 }
@@ -174,11 +188,13 @@ function change(){
    START
 ========================= */
 
-
 async function start(){
 
 
     await loadImages();
+
+
+    shuffleImages();
 
 
     change();
@@ -186,11 +202,8 @@ async function start(){
 
 
     setInterval(
-
         change,
-
         10000
-
     );
 
 
